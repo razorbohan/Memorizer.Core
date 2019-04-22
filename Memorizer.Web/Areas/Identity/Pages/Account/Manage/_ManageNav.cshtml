@@ -1,0 +1,20 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var isAdmin = await UserManager.IsInRoleAsync(await UserManager.GetUserAsync(User), "Admin");
+}
+<div class="nav nav-pills flex-column">
+    <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" asp-page="./Index">Profile</a>
+    <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a>
+    @if (hasExternalLogins)
+    {
+        <a class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" id="external-login" asp-page="./ExternalLogins">External logins</a>
+    }
+    <a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" asp-page="./TwoFactorAuthentication">Two-factor authentication</a>
+
+    @if (isAdmin)
+    {
+        <a class="nav-link" asp-page="../Register" @*asp-route-returnUrl="@Model.ReturnUrl"*@>Register a new user</a>
+    }
+</div>

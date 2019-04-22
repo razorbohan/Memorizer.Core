@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="errorBlock">
+    <div class="row">
+        <h1 class="mx-auto">
+            A <strong class="text-danger">broken cat</strong> suddenly appeared to be here...
+        </h1>
+        <p class="mx-auto text-nowrap">
+            His name is
+
+            <strong class="text-danger error-code">
+                @if (ViewData["message"] != null)
+                {
+                    @ViewData["statusCode"]
+                }
+                else
+                {
+                    @:Unknown
+                }
+            </strong>
+        </p>
+
+        <div class="speech-bubble col-lg-5 col-md-7 col-sm-8 offset-lg-6 offset-md-5 offset-sm-4">
+            <blockquote class="blockquote text-right">
+                <p>
+                    @if (ViewData["message"] != null)
+                    {
+                        @ViewData["message"]
+                    }
+                    else
+                    {
+                        @:Something definitely went wrong
+                    }
+                </p>
+                <footer class="blockquote-footer">
+                    Cat says
+                </footer>
+            </blockquote>
+        </div>
+
+        <div class="error-cat mx-auto">
+            <img src="/images/cat.png" alt="Where is the cat?" />
+        </div>
+    </div>
+</div>
+
+<style>
+    footer {
+        display: none;
+    }
+</style>

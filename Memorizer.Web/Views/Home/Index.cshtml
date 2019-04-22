@@ -1,0 +1,160 @@
+﻿@model Memorizer.Web.Models.Memo
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="baseContainer">
+
+    <div id="messageBox" class="alert alert-dismissible fade show mb-0 text-center d-none" role="alert">
+        <span id="message"></span>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+
+    <div class="row">
+        <div class="summary">
+            <span>Level: @Html.DisplayFor(x => x.PostponeLevel), </span>
+            <span>Scores: @Html.DisplayFor(x => x.Scores)</span>
+        </div>
+    </div>
+
+    <textarea class="col-12" asp-for="Question" id="questionArea"></textarea>
+
+    <div class="row justify-content-around my-2 text-nowrap">
+        <div class="col-3 d-flex justify-content-center align-items-center">
+            <span>Overall: @ViewBag.Overall</span>
+        </div>
+        <div class="col-3 d-flex justify-content-center">
+            <button class="btn btn-primary p-3" id="showAnswer" type="button">Show</button>
+        </div>
+        <div class="col-3 d-flex justify-content-center update-group">
+            <div class="btn-group">
+                <button class="btn btn-outline-secondary" id="replaceMemos" type="button">
+                    <i class="fa fa-exchange"></i>
+                </button>
+                <button class="btn btn-outline-primary" id="updateButton" type="button">
+                    <i class="far fa-save"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <textarea class="col-12" id="answerArea"></textarea>
+
+    <div class="row">
+        <div class="mx-auto my-2">
+            <form id="answerForm" method="post">
+                <div class="btn-group">
+                    @if (ViewBag.Mode != "Repeat")
+                    {
+                        <input type="submit" name="answer" class="btn btn-danger" value="Bad" />
+                        <input type="submit" name="answer" class="btn btn-warning" value="Tomorrow" />
+                    }
+                    <input type="submit" name="answer" class="btn btn-primary" value="Later" />
+                    <input type="submit" name="answer" class="btn btn-success" value="Cool" />
+                </div>
+                <div class="form-group">
+                    <recaptcha />
+                    <span class="text-danger" id="recaptchaErrorMessage"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mx-auto">
+            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add new Memo</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <textarea class="col-md-12" id="addQuestionArea"></textarea>
+                <textarea class="col-md-12" id="addAnswerArea"></textarea>
+            </div>
+            <div class="modal-footer">
+                <input id="submitNewMemo" type="button" class="btn btn-primary" value="Add" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="findModal" tabindex="-1" aria-labelledby="findModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Find Memo</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <select class="col-10 col-sm-3" id="findKey">
+                        <option value=" ">*</option>
+                        <option value="id">Id</option>
+                        <option value="question">Question</option>
+                        <option value="answer">Answer</option>
+                        <option value="repeatDate">Repeat date</option>
+                        <option value="postponeLevel">LVL</option>
+                        <option value="scores">Scores</option>
+                    </select>
+                    <input class="col-10 col-sm-6" type="text" id="findValue"/>
+                    <input class="col-10 col-sm-2 btn btn-primary" type="button" id="findNewMemo" value="Find" />
+                </div>
+            </div>
+            <div id="jsGrid"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="finishModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Finished</h5>
+                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <p>There is nothing to <span id="finishMessage"></span> more!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{
+    //TODO git
+
+    //TODO bootstrap example
+    //TODO Memos to localStorage/IndexedDB (ES6+/TS)
+    //TODO pictures to Social Apps
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        (function () {
+            if (@Html.Raw(Json.Serialize(Model)) == null) {
+                finish('@ViewBag.Mode' == 'Repeat' ? 'Learn' : 'Repeat');
+            }
+
+            var baseUrl = '@Url.Action("Update", "Home").Replace("Update", "")';
+            var memoModel = @Html.Raw(Json.Serialize(Model));
+            initiate(baseUrl, memoModel);
+        })();
+    </script>
+}

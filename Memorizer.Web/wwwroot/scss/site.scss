@@ -1,0 +1,51 @@
+﻿$mainFont: Verdana, Arial, Helvetica, sans-serif;
+
+body {
+    padding-top: 70px;
+}
+
+.dropdown-divider{
+    border-color: gray;
+}
+
+.baseContainer {
+    font-family: $mainFont;
+
+    textarea {
+        height: 200px;
+        text-align: center;
+        font-weight: bold;
+        resize: none;
+    }
+
+    #message {
+        position: relative;
+        left: 15px
+    }
+
+    #answerForm {
+        visibility: hidden;
+
+        input {
+            padding: 15px 20px;
+        }
+    }
+
+    .update-group {
+        visibility: hidden;
+    }
+
+    .fa-exchange {
+        transform: rotate(90deg);
+    }
+
+    .summary {
+        margin: 0.25em auto;
+    }
+}
+
+@import "modal";
+@import "loader";
+@import "error";
+@import "media";
+@import "slider";

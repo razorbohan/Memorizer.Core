@@ -1,0 +1,315 @@
+/*==========  Desktop First Method  ==========*/
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+  textarea {
+    font-size: 25px; }
+  .update-group button {
+    padding: 16px; } }
+
+/* Small Devices, Tablets */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 576px) {
+  #findModal .modal-body input, #findModal .modal-body select {
+    padding: 3px; }
+  #findModal .modal-body input {
+    margin-top: 10px; }
+  #findModal .modal-body input[type=button] {
+    position: relative;
+    right: 5px; } }
+
+/* Extra Small Devices, Phones */
+/* Custom, iPhone Retina */
+/*==========  Mobile First Method  ==========*/
+/* Custom, iPhone Retina */
+/* Extra Small Devices, Phones */
+/* Small Devices, Tablets */
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  textarea {
+    font-size: 32px; }
+  .update-group button {
+    padding: 16px 25px; } }
+
+/* Large Devices, Wide Screens */
+
+body {
+  padding-top: 70px; }
+
+.dropdown-divider {
+  border-color: gray; }
+
+.baseContainer {
+  font-family: Verdana, Arial, Helvetica, sans-serif; }
+
+.baseContainer textarea {
+  height: 200px;
+  text-align: center;
+  font-weight: bold;
+  resize: none; }
+
+.baseContainer #message {
+  position: relative;
+  left: 15px; }
+
+.baseContainer #answerForm {
+  visibility: hidden; }
+
+.baseContainer #answerForm input {
+  padding: 15px 20px; }
+
+.baseContainer .update-group {
+  visibility: hidden; }
+
+.baseContainer .fa-exchange {
+  transform: rotate(90deg); }
+
+.baseContainer .summary {
+  margin: 0.25em auto; }
+
+.modal {
+  padding-right: 0 !important; }
+
+#findModal .modal-dialog {
+  margin: 1.75rem auto; }
+
+#findModal .modal-dialog #findKey, #findModal .modal-dialog #findValue {
+  margin-right: 10px; }
+
+#addModal .modal-body textarea {
+  margin-bottom: 15px;
+  height: 150px;
+  resize: none; }
+
+.lds-ellipsis {
+  display: inline-block;
+  visibility: hidden;
+  position: relative;
+  width: 64px;
+  height: 30px; }
+
+.lds-ellipsis div {
+  position: absolute;
+  top: 10px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #cef;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0); }
+
+.lds-ellipsis div:nth-child(1) {
+  left: 6px;
+  animation: lds-ellipsis1 0.6s infinite; }
+
+.lds-ellipsis div:nth-child(2) {
+  left: 6px;
+  animation: lds-ellipsis2 0.6s infinite; }
+
+.lds-ellipsis div:nth-child(3) {
+  left: 26px;
+  animation: lds-ellipsis2 0.6s infinite; }
+
+.lds-ellipsis div:nth-child(4) {
+  left: 45px;
+  animation: lds-ellipsis3 0.6s infinite; }
+
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0); }
+  100% {
+    transform: scale(1); } }
+
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1); }
+  100% {
+    transform: scale(0); } }
+
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0); }
+  100% {
+    transform: translate(19px, 0); } }
+
+.errorBlock {
+  /*text-align: center;*/ }
+
+.errorBlock blockquote {
+  font-weight: bold;
+  font-style: italic;
+  margin: 1em 2em; }
+
+.errorBlock blockquote p:before {
+  content: '"'; }
+
+.errorBlock blockquote p:after {
+  content: '"'; }
+
+.errorBlock .error-cat {
+  /*position: fixed;
+        bottom: 0;*/ }
+
+.errorBlock .error-code {
+  font-size: 7em;
+  line-height: 1em; }
+
+.errorBlock .speech-bubble {
+  position: relative;
+  background: #d0d0d0;
+  border-radius: 380px / 130px;
+  padding: 10px; }
+
+.errorBlock .speech-bubble:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border: 42px solid transparent;
+  border-top-color: #d0d0d0;
+  border-bottom: 0;
+  border-left: 0;
+  margin-left: -21px;
+  margin-bottom: -41px; }
+
+.error404Block {
+  text-align: center; }
+
+.error404Block .errorCode p {
+  font-size: 15em; }
+
+.error404Block .errorMessage p {
+  font-size: 1em; }
+
+.error404Block .zero {
+  color: red; }
+
+/*==========  Desktop First Method  ==========*/
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+  textarea {
+    font-size: 25px; }
+  .update-group button {
+    padding: 16px; } }
+
+/* Small Devices, Tablets */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 576px) {
+  #findModal .modal-body input, #findModal .modal-body select {
+    padding: 3px; }
+  #findModal .modal-body input {
+    margin-top: 10px; }
+  #findModal .modal-body input[type=button] {
+    position: relative;
+    right: 5px; } }
+
+/* Extra Small Devices, Phones */
+/* Custom, iPhone Retina */
+/*==========  Mobile First Method  ==========*/
+/* Custom, iPhone Retina */
+/* Extra Small Devices, Phones */
+/* Small Devices, Tablets */
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  textarea {
+    font-size: 32px; }
+  .update-group button {
+    padding: 16px 25px; } }
+
+/* Large Devices, Wide Screens */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 30px; }
+
+.switch input {
+  display: none; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f2f2f2;
+  -webkit-transition: .4s;
+  transition: .4s; }
+
+.slider:before {
+  position: absolute;
+  z-index: 2;
+  content: "";
+  height: 30px;
+  width: 30px;
+  left: 0px;
+  bottom: 0px;
+  background-color: darkslategrey;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+  -webkit-transition: .2s;
+  transition: all 0.2s ease-in-out; }
+
+.slider:after {
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  content: "YES";
+  font-size: 15px;
+  text-align: left !important;
+  line-height: 30px;
+  padding-left: 0;
+  width: 80px;
+  height: 30px;
+  color: #fff;
+  border-radius: 100px;
+  background-color: dodgerblue;
+  -webkit-transform: translateX(-50px);
+  -ms-transform: translateX(-50px);
+  transform: translateX(-50px);
+  transition: all 0.2s ease-in-out; }
+
+input:checked + .slider:after {
+  -webkit-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+  /*width: 235px;*/
+  padding-left: 15px; }
+
+input:checked + .slider:before {
+  background-color: blue; }
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px); }
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 100px; }
+
+.slider.round:before {
+  border-radius: 50%; }
+
+.absolute-no {
+  position: absolute;
+  left: 0;
+  color: darkslategrey;
+  text-align: right !important;
+  font-size: 15px;
+  width: calc(100% - 15px);
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer; }
+
+.switch + span {
+  position: relative;
+  left: 6px;
+  bottom: 8px; }
+
+.switch {
+  margin-bottom: 0; }

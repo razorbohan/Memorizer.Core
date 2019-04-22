@@ -1,0 +1,34 @@
+/*==========  Desktop First Method  ==========*/
+/* Large Devices, Wide Screens */
+/* Medium Devices, Desktops */
+@media only screen and (max-width: 992px) {
+  textarea {
+    font-size: 25px; }
+  .update-group button {
+    padding: 16px; } }
+
+/* Small Devices, Tablets */
+/* Small Devices, Tablets */
+@media only screen and (max-width: 576px) {
+  #findModal .modal-body input, #findModal .modal-body select {
+    padding: 3px; }
+  #findModal .modal-body input {
+    margin-top: 10px; }
+  #findModal .modal-body input[type=button] {
+    position: relative;
+    right: 5px; } }
+
+/* Extra Small Devices, Phones */
+/* Custom, iPhone Retina */
+/*==========  Mobile First Method  ==========*/
+/* Custom, iPhone Retina */
+/* Extra Small Devices, Phones */
+/* Small Devices, Tablets */
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  textarea {
+    font-size: 32px; }
+  .update-group button {
+    padding: 16px 25px; } }
+
+/* Large Devices, Wide Screens */

@@ -1,0 +1,66 @@
+﻿.errorBlock {
+    /*text-align: center;*/
+
+    blockquote {
+        font-weight: bold;
+        font-style: italic;
+        margin: 1em 2em;
+    }
+
+    blockquote p:before {
+        content: '"';
+    }
+
+    blockquote p:after {
+        content: '"';
+    }
+
+    .error-cat {
+        /*position: fixed;
+        bottom: 0;*/
+    }
+
+    .error-code {
+        font-size: 7em;
+        //margin-left: 10px;
+        line-height: 1em;
+    }
+
+    .speech-bubble {
+        position: relative;
+        background: #d0d0d0;
+        border-radius: 380px / 130px;
+        padding: 10px;
+    }
+
+    .speech-bubble:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border: 42px solid transparent;
+        border-top-color: #d0d0d0;
+        border-bottom: 0;
+        border-left: 0;
+        margin-left: -21px;
+        margin-bottom: -41px;
+    }
+}
+
+.error404Block {
+    text-align: center;
+
+    .errorCode p {
+        font-size: 15em;
+    }
+
+    .errorMessage p {
+        font-size: 1em;
+    }
+
+    .zero{
+        color: red;
+    }
+}

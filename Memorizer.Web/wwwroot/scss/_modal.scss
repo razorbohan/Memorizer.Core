@@ -1,0 +1,20 @@
+﻿
+.modal {
+    padding-right: 0 !important;
+}
+
+#findModal .modal-dialog {
+    margin: 1.75rem auto;
+
+    #findKey, #findValue {
+        margin-right: 10px;
+    }
+}
+
+#addModal .modal-body {
+    textarea {
+        margin-bottom: 15px;
+        height: 150px;
+        resize: none;
+    }
+}

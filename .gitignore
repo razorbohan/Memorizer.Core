@@ -1,0 +1,11 @@
+.vs
+bin/
+obj/
+*.user
+secrets.xml
+packages/
+Memorizer.Web/wwwroot/lib/
+Memorizer.Web/Properties/PublishProfiles/
+Memorizer.Web/node_modules/
+Memorizer.Web/Keys/
+Memorizer.Web/appsettings.Production.json
