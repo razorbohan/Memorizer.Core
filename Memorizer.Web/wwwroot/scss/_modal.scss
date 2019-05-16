@@ -9,6 +9,11 @@
     #findKey, #findValue {
         margin-right: 10px;
     }
+
+    .jsgrid-cell {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 }
 
 #addModal .modal-body {

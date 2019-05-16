@@ -5,6 +5,8 @@ obj/
 secrets.xml
 packages/
 Memorizer.Web/wwwroot/lib/
+Memorizer.Web/wwwroot/css/
+Memorizer.Web/wwwroot/js/dist/
 Memorizer.Web/Properties/PublishProfiles/
 Memorizer.Web/node_modules/
 Memorizer.Web/Keys/
