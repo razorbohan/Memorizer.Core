@@ -130,16 +130,17 @@ namespace Memorizer.Web
                 app.UseExceptionHandler("/Error");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 app.UseHsts();
+                app.UseWhen(x => x.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase),
+                    builder =>
+                    {
+                        builder.UseMiddleware<BasicAuthMiddleware>();
+                    });
             }
 
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            app.UseWhen(x => x.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase),
-                builder =>
-                {
-                    builder.UseMiddleware<BasicAuthMiddleware>();
-                });
+            
             app.UseAuthentication();
 
             app.UseSession();
