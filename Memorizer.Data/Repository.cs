@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Memorizer.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,7 +50,7 @@ namespace Memorizer.Data
             }
 
             return from memo in Entities
-                   where GetPropertyValue(memo, key).Equals(value)
+                   where GetPropertyValue(memo, key).Contains(value)
                    select memo;
         }
 

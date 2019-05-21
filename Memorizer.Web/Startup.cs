@@ -93,6 +93,15 @@ namespace Memorizer.Web
                     microsoftOptions.ClientSecret = Configuration["MicrosoftClientSecret"];
                 });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddRecaptcha(new RecaptchaOptions
@@ -111,18 +120,10 @@ namespace Memorizer.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
         {
-            //app.Run(async context =>
-            //{
-            //    await context.Response.WriteAsync("<p>");
-            //    await context.Response.WriteAsync(Configuration["RecaptchaSiteKey"] + "</br>");
-            //    await context.Response.WriteAsync(Configuration["RecaptchaSecretKey"] + "</br></p>");
-            //});
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseExceptionHandler("/Error");
-                //app.UseStatusCodePagesWithReExecute("/Error/{0}");
+                app.UseCors("CorsPolicy");
             }
             else
             {
