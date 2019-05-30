@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Memorizer.Data;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using Memo = Memorizer.Data.Models.Memo;
 
@@ -57,7 +59,21 @@ namespace Memorizer.Web
             services.AddTransient<IMemorizerLogic, MemorizerLogic>();
             services.AddTransient<IEmailSender, EmailSender>(emailSender => new EmailSender(Configuration["SendGridKey"]));
 
-            services.AddAuthentication()
+            services.AddAuthentication(/*JwtBearerDefaults.AuthenticationScheme*/)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = "https://localhost:44367",
+                        ValidAudience = "https://localhost:44367",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                    };
+                })
                 .AddVKontakte(vkOptions =>
                 {
                     vkOptions.ClientId = Configuration["VkClientId"];
@@ -93,15 +109,6 @@ namespace Memorizer.Web
                     microsoftOptions.ClientSecret = Configuration["MicrosoftClientSecret"];
                 });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials());
-            });
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddRecaptcha(new RecaptchaOptions
@@ -123,7 +130,7 @@ namespace Memorizer.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors("CorsPolicy");
+                app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
             }
             else
             {
