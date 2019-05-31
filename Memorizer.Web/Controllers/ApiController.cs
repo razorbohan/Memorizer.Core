@@ -23,7 +23,7 @@ namespace Memorizer.Web.Controllers
         private SignInManager<IdentityUser> SignInManager { get; }
         private UserManager<IdentityUser> UserManager { get; }
 
-        public ApiController(IMemorizerLogic memorizerLogic, 
+        public ApiController(IMemorizerLogic memorizerLogic,
             SignInManager<IdentityUser> signInManager,
             UserManager<IdentityUser> userManager)
         {
@@ -34,29 +34,39 @@ namespace Memorizer.Web.Controllers
 
         // POST: api/Authenticate
         [HttpPost("Authenticate")]
-        public async Task<ApiResponse<string>> Authenticate([FromBody]LoginInputModel input)
+        public async Task<ApiResponse<AuthBody>> Authenticate([FromBody]LoginInputModel input)
         {
             try
             {
+                if (!ModelState.IsValid) throw new Exception("Wrong login data!");
+
                 var result = await SignInManager.PasswordSignInAsync(input.Email, input.Password, input.RememberMe, false);
                 if (!result.Succeeded) throw new Exception("Failed to authenticate!");
 
-                var user = UserManager.FindByEmailAsync(input.Email);
+                var user = await UserManager.FindByEmailAsync(input.Email);
 
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes("secret_Key_123123123sdfsdfsdfsdf");
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new[]
-                    {
-                        new Claim(ClaimTypes.Name, user.Id.ToString())
-                    }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                var tokenString = GenerateToken(user);
+                return new ApiResponse<AuthBody>(success: true, body: new AuthBody { Username = user.UserName, Token = tokenString});
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<AuthBody>(success: false, error: ex.Message);
+            }
+        }
 
+        // POST: api/Register
+        [HttpPost("Register")]
+        public async Task<ApiResponse<string>> Register([FromBody]RegisterInputModel input)
+        {
+            try
+            {
+                if (!ModelState.IsValid) throw new Exception("Wrong register data!");
+
+                var user = new IdentityUser { UserName = input.Email, Email = input.Email };
+                var result = await UserManager.CreateAsync(user, input.Password);
+                if (!result.Succeeded) throw new Exception("Failed to register!");
+
+                var tokenString = GenerateToken(user);
                 return new ApiResponse<string>(success: true, body: tokenString);
             }
             catch (Exception ex)
@@ -107,8 +117,8 @@ namespace Memorizer.Web.Controllers
             }
             catch (Exception ex)
             {
-                return !MemoExists(memo.Id) 
-                    ? new ApiResponse(success: false, error: "Memo not found") 
+                return !MemoExists(memo.Id)
+                    ? new ApiResponse(success: false, error: "Memo not found")
                     : new ApiResponse(success: false, error: ex.Message);
             }
 
@@ -181,6 +191,23 @@ namespace Memorizer.Web.Controllers
         private bool MemoExists(int id)
         {
             return MemorizerLogic.GetMemos().Any(e => e.Id == id);
+        }
+
+        private string GenerateToken(IdentityUser user)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("secret_Key_123123123sdfsdfsdfsdf");
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
