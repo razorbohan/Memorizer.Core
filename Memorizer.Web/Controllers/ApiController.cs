@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Memorizer.Logic;
 using Memorizer.Web.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Memo = Memorizer.Data.Models.Memo;
 
 namespace Memorizer.Web.Controllers
@@ -15,10 +20,49 @@ namespace Memorizer.Web.Controllers
     public class ApiController : ControllerBase
     {
         private IMemorizerLogic MemorizerLogic { get; }
+        private SignInManager<IdentityUser> SignInManager { get; }
+        private UserManager<IdentityUser> UserManager { get; }
 
-        public ApiController(IMemorizerLogic memorizerLogic)
+        public ApiController(IMemorizerLogic memorizerLogic, 
+            SignInManager<IdentityUser> signInManager,
+            UserManager<IdentityUser> userManager)
         {
             MemorizerLogic = memorizerLogic;
+            SignInManager = signInManager;
+            UserManager = userManager;
+        }
+
+        // POST: api/Authenticate
+        [HttpPost("Authenticate")]
+        public async Task<ApiResponse<string>> Authenticate([FromBody]LoginInputModel input)
+        {
+            try
+            {
+                var result = await SignInManager.PasswordSignInAsync(input.Email, input.Password, input.RememberMe, false);
+                if (!result.Succeeded) throw new Exception("Failed to authenticate!");
+
+                var user = UserManager.FindByEmailAsync(input.Email);
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes("secret_Key_123123123sdfsdfsdfsdf");
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new[]
+                    {
+                        new Claim(ClaimTypes.Name, user.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return new ApiResponse<string>(success: true, body: tokenString);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<string>(success: false, error: ex.Message);
+            }
         }
 
         // GET: api/GetMemos

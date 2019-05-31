@@ -123,6 +123,15 @@ namespace Memorizer.Web
                 options.Cookie.Name = "MemosQueue";
                 options.IdleTimeout = TimeSpan.FromDays(1);
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider)
@@ -130,7 +139,7 @@ namespace Memorizer.Web
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseCors(builder => builder.WithOrigins("http://localhost:4200"));
+                app.UseCors("CorsPolicy");
             }
             else
             {
