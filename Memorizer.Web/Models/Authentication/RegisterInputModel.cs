@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Memorizer.Web.Models
+namespace Memorizer.Web.Models.Authentication
 {
     public class RegisterInputModel
     {

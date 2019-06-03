@@ -7,6 +7,8 @@ using Memorizer.Data.Models;
 using Memorizer.Logic;
 using Memorizer.Web.Areas.Identity.Services;
 using Memorizer.Web.Middleware;
+using Memorizer.Web.Models.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -59,7 +61,7 @@ namespace Memorizer.Web
             services.AddTransient<IMemorizerLogic, MemorizerLogic>();
             services.AddTransient<IEmailSender, EmailSender>(emailSender => new EmailSender(Configuration["SendGridKey"]));
 
-            services.AddAuthentication(/*JwtBearerDefaults.AuthenticationScheme*/)
+            services.AddAuthentication()
                 .AddJwtBearer(options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -69,9 +71,9 @@ namespace Memorizer.Web
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
 
-                        ValidIssuer = "https://localhost:44367",
-                        ValidAudience = "https://localhost:44367",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                        ValidIssuer = Configuration["JwtAuthentication:ValidIssuer"],
+                        ValidAudience = Configuration["JwtAuthentication:ValidAudience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtAuthentication:SecurityKey"]))
                     };
                 })
                 .AddVKontakte(vkOptions =>
@@ -111,6 +113,8 @@ namespace Memorizer.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            services.Configure<JwtAuthentication>(Configuration.GetSection("JwtAuthentication"));
+
             services.AddRecaptcha(new RecaptchaOptions
             {
                 SiteKey = Configuration["RecaptchaSiteKey"],
@@ -146,17 +150,17 @@ namespace Memorizer.Web
                 app.UseExceptionHandler("/Error");
                 app.UseStatusCodePagesWithReExecute("/Error/{0}");
                 app.UseHsts();
-                app.UseWhen(x => x.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase),
-                    builder =>
-                    {
-                        builder.UseMiddleware<BasicAuthMiddleware>();
-                    });
+                //app.UseWhen(x => x.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase),
+                //    builder =>
+                //    {
+                //        builder.UseMiddleware<BasicAuthMiddleware>();
+                //    });
             }
 
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
-            
+
             app.UseAuthentication();
 
             app.UseSession();
