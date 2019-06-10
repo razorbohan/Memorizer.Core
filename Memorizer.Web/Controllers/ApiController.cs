@@ -64,8 +64,9 @@ namespace Memorizer.Web.Controllers
         }
 
         // POST: api/Register
+        [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<ApiResponse> Register([FromBody]RegisterInputModel input)
+        public async Task<ApiResponse<AuthBody>> Register([FromBody]RegisterInputModel input)
         {
             try
             {
@@ -76,11 +77,11 @@ namespace Memorizer.Web.Controllers
                 if (!result.Succeeded) throw new Exception("Failed to register!");
 
                 var tokenString = GenerateToken(user);
-                return new ApiResponse<string>(success: true, body: tokenString);
+                return new ApiResponse<AuthBody>(success: true, body: new AuthBody { Username = user.UserName, Token = tokenString });
             }
             catch (Exception ex)
             {
-                return new ApiResponse<string>(success: false, error: ex.Message);
+                return new ApiResponse<AuthBody>(success: false, error: ex.Message);
             }
         }
 
