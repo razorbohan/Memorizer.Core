@@ -21,4 +21,10 @@
             Body = body;
         }
     }
+
+    public class AuthBody
+    {
+        public string Username;
+        public string Token;
+    }
 }
